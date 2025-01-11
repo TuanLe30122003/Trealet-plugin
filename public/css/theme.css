@@ -1,0 +1,33 @@
+.dark-theme-background {
+    background-color: #181717!important;
+    color: #646261;
+}
+
+.item-dark-theme {
+    background-color: #21201f;
+    color: #fff;
+}
+
+.name-color-darkmode { 
+    color: #fff!important;
+}
+
+.white-border {
+    border: 1px solid #fff!important;
+}
+
+.dark-scrollbar {
+    background-color: #646261!important;
+}
+
+.light-scrollbar {
+    background-color: #e6e6e6!important;
+}
+
+.dark-scrollbar-unit {
+    
+}
+
+.light-scrollbar-unit {
+
+}
