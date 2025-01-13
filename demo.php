@@ -92,6 +92,14 @@ function render_header($white_color)
                 <h1>Trealet</h1>
                 <p>Knowledge of Art & Culture</p>
             </div>
+
+            <div class='sidebar-close-icon sidebar-icon'>
+                <ion-icon name='chevron-back-outline'></ion-icon>
+            </div>
+
+            <div class='sidebar-open-icon sidebar-icon'>
+                <ion-icon name='chevron-forward-outline'></ion-icon>
+            </div>
         </div>";
 }
 
@@ -163,11 +171,11 @@ function render_article_list($data, $list_type_option, $article_count_on_page, $
 {
     $background = $is_dark_mode ? "dark-scrollbar" : "light-scrollbar";
     $output = $list_type_option
-        ? "<ul class='article_list_scroll {$background}'>"
-        : "<ul class='article_list_page {$background}'>";
+        ? "<ul class='article_list_scroll article_list {$background}'>"
+        : "<ul class='article_list_page article_list {$background}'>";
 
     foreach ($data as $key => $value) {
-        $number = str_pad($key + 1, 2, '0', STR_PAD_LEFT);
+        $number = str_pad(count($data) - $key, 2, '0', STR_PAD_LEFT);
         $output .= "<li class='title' data-id='$key'><span>{$number}</span><p>{$value['title']}</p></li>";
     }
 

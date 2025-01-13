@@ -90,3 +90,43 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	});
 });
+
+
+// close the sidebar after clicking the arrow icon 
+
+const sideBarCloseIcon = document.querySelector(".sidebar-close-icon");
+const searchBar = document.querySelector(".search_bar");
+const optionTitle = document.querySelectorAll('.title > p')
+const sideBarOpenIcon = document.querySelector('.sidebar-open-icon')
+const trealetLogo = document.querySelector('.trealet-logo')
+const optionSection = document.querySelector('.option-section')
+const sectionList = document.querySelector('.article_list')
+
+sideBarCloseIcon.addEventListener('click', () => {
+	searchBar.style.display = "none";
+	sideBarCloseIcon.style.display = "none";
+	sideBarOpenIcon.style.display = "flex";
+	trealetLogo.style.display = "none"
+	optionSection.style.position = "absolute";
+
+	sectionList.style.display = "none";
+
+	optionTitle.forEach((title) => {
+		title.style.display = "none"
+	})
+})
+
+sideBarOpenIcon.addEventListener('click', () => {
+	searchBar.style.display = "flex";
+	sideBarCloseIcon.style.display = "flex";
+	sideBarOpenIcon.style.display = "none"
+	trealetLogo.style.display = "flex"
+	optionSection.style.position = "unset";
+
+	sectionList.style.display = "flex";
+	optionTitle.forEach((title) => {
+		title.style.display = "flex"
+	})
+
+})
+
