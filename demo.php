@@ -63,18 +63,27 @@ add_shortcode('display_text', function () {
 
     // Tạo cấu trúc HTML chính
     $html = "
-        <div class='cover'>
-            <div class='bot-cover {$theme_background}'>
-                <div class='option-section {$theme_background}'>
+        <section class='full'>
+            <div class='cover'>
+                <div class='navigation'>
                     " . render_header($white_color) . "
-                    " . render_search_bar() . "
-                    " . render_article_list($data, $list_type_option, $article_count_on_page, $is_dark_mode) . "
+                    <div class='direct'>
+                        <ion-icon name='help-circle-outline'></ion-icon>
+                        <div class='user-avt'></div>
+                    </div>
                 </div>
-                <div class='option_content {$theme_item}'>
-                    " . render_articles($data) . "
+
+                <div class='bot-cover {$theme_background}'>
+                    <div class='option-section {$theme_background}'>
+                        " . render_search_bar() . "
+                        " . render_article_list($data, $list_type_option, $article_count_on_page, $is_dark_mode) . "
+                    </div>
+                    <div class='option_content {$theme_item}'>
+                        " . render_articles($data) . "
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     ";
 
     // Xuất HTML
@@ -88,19 +97,23 @@ function render_header($white_color)
 {
     return "
         <div class='header {$white_color}'>
+            <div class='trealet-logo-image'>
+                <img src='https://trealet.com/assets/img/icons/apple-touch-icon-144x144.png' class=''>
+            </div>
+
             <div class='trealet-logo'>
                 <h1>Trealet</h1>
                 <p>Knowledge of Art & Culture</p>
             </div>
-
-            <div class='sidebar-close-icon sidebar-icon'>
-                <ion-icon name='chevron-back-outline'></ion-icon>
-            </div>
-
-            <div class='sidebar-open-icon sidebar-icon'>
-                <ion-icon name='chevron-forward-outline'></ion-icon>
-            </div>
         </div>";
+
+            //<div class='sidebar-close-icon sidebar-icon'>
+            //     <ion-icon name='chevron-back-outline'></ion-icon>
+            // </div>
+
+            // <div class='sidebar-open-icon sidebar-icon'>
+            //     <ion-icon name='chevron-forward-outline'></ion-icon>
+            // </div>
 }
 
 function render_search_bar()
@@ -176,7 +189,9 @@ function render_article_list($data, $list_type_option, $article_count_on_page, $
 
     foreach ($data as $key => $value) {
         $number = str_pad(count($data) - $key, 2, '0', STR_PAD_LEFT);
-        $output .= "<li class='title' data-id='$key'><span>{$number}</span><p>{$value['title']}</p></li>";
+        // $output .= "<li class='title' data-id='$key'><span>{$number}</span><p>{$value['title']}</p></li>";
+        $output .= "<li class='title' data-id='$key'><p>{$value['title']}</p></li>";
+
     }
 
     $output .= "</ul>";

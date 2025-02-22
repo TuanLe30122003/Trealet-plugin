@@ -1,3 +1,4 @@
+
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -5,128 +6,125 @@ document.addEventListener('DOMContentLoaded', function () {
 	const contents = document.querySelectorAll('.content_unit');
 	const titles = document.querySelectorAll('.content-title-name');
 
-	// Click event for options
+
 	options.forEach(function (option) {
 		option.addEventListener('click', function () {
 			const optionId = this.dataset.id;
 
-			// Update active styles for options
-			options.forEach(opt => opt.classList.remove('clicked', 'unClicked'));
-			this.classList.add('clicked');
+			options.forEach(function (opt) {
+				opt.classList.remove('clicked');
+				opt.classList.add("unClicked");
+			});
 
-			// Show/hide corresponding content and title
-			contents.forEach(content => content.style.display = content.dataset.id === optionId ? 'flex' : 'none');
-			titles.forEach(title => title.style.display = title.dataset.id === optionId ? 'block' : 'none');
+			contents.forEach(function (content) {
+				const contentId = content.dataset.id;
+
+				if (optionId === contentId) {
+					content.style.display = 'flex';
+				} else {
+					content.style.display = 'none';
+				}
+			});
+
+			titles.forEach(function (title) {
+				const titleId = title.dataset.id;
+
+				if (optionId === titleId) {
+					title.style.display = 'block';
+				} else {
+					title.style.display = 'none';
+				}
+			});
+
+			this.classList.remove('unClicked');
+			this.classList.add('clicked');
 		});
 	});
 
-	// Simulate click for the first option if available
-	if (options.length > 0) {
-		options[0].click();
-	}
+	options[0].click();
 
-	// Search bar functionality
-	const searchInput = document.querySelector(".search-input");
+	const searchInput = document.querySelector(".search-input")
+
 	searchInput.addEventListener("keydown", (event) => {
 		if (event.key === "Enter") {
-			const query = event.target.value.toLowerCase();
-			let result = Array.from(options).filter(option => option.innerText.toLowerCase().includes(query));
+			const query = event.target.value.toLowerCase()
 
-			// Show matching options, hide others
-			options.forEach(option => option.style.display = result.includes(option) ? 'flex' : 'none');
+			let result = []
 
-			// Simulate click for the first search result if any
-			if (result.length > 0) {
-				result[0].click();
-			} else {
-				console.log("No results found for query:", query);
-			}
+			options.forEach(function (option) {
+
+				if (option.innerText.toLowerCase().includes(query)) {
+					result.push(option);
+					option.style.display = "flex";
+					console.log(option)
+				} else {
+					option.style.display = "none";
+				}
+			})
+
+			result[0].click();
 		}
-	});
+	})
 
-	// Pagination logic
-	const pageList = document.querySelector(".article_list_page");
-	const listUnit = document.querySelectorAll(".article_list_page > li");
-	const numberOfArticles = options.length;
-	const unitOnEachPage = 5;
 
-	let currentPage = 1;
-	const totalPages = Math.ceil(numberOfArticles / unitOnEachPage);
+	// page type list logic
+
+	const pageList = document.querySelector(".article_list_page")
+	var numberOfPage = 1
+	const unitOnEachPage = 5
+	const listUnit = document.querySelectorAll(".article_list_page > li")
+
+	const numberOfArticle = options.length
 
 	const processPage = () => {
-		listUnit.forEach((unit, index) => {
-			let condition = index >= (currentPage - 1) * unitOnEachPage && index < currentPage * unitOnEachPage;
-			unit.style.display = condition ? 'flex' : 'none';
-		});
-	};
+		listUnit.forEach((unit) => {
+			const unitId = unit.dataset.id
+			const articleNumber = numberOfArticle - unitId;
+			let condition = (articleNumber <= (unitOnEachPage * numberOfPage)) && (articleNumber > ((numberOfPage - 1) * unitOnEachPage))
 
-	const updatePageIndicators = () => {
-		const pos1 = document.querySelector(".pos1");
-		const pos2 = document.querySelector(".pos2");
-		const pos3 = document.querySelector(".pos3");
+			if (!condition) {
+				unit.style.display = "none"
+			} else {
+				unit.style.display = "flex"
+			}
+		})
+	}
 
-		pos1.textContent = currentPage > 1 ? currentPage - 1 : '';
-		pos2.textContent = currentPage;
-		pos3.textContent = currentPage < totalPages ? currentPage + 1 : '';
-	};
+	processPage()
 
-	// Initial page setup
-	processPage();
-	updatePageIndicators();
+	const nextPage = document.querySelector(".next")
+	const prePage = document.querySelector(".pre")
+	const pos1 = document.querySelector(".pos1")
+	const pos2 = document.querySelector(".pos2")
+	const pos3 = document.querySelector(".pos3")
 
-	document.querySelector(".next").addEventListener("click", () => {
-		if (currentPage < totalPages) {
-			currentPage++;
-			processPage();
-			updatePageIndicators();
+	const handleChangeOfPage = () => {
+		if (numberOfPage === 1) {
+			pos1.innerHTML = 1
+			pos2.innerHTML = 2
+			pos3.innerHTML = 3
+		} else if (numberOfPage === numberOfArticle) {
+			pos1.innerHTML = 83
+			pos2.innerHTML = 84
+			pos3.innerHTML = 85
+		} else {
+			pos2.innerHTML = numberOfPage
+			pos1.innerHTML = numberOfPage - 1
+			pos3.innerHTML = numberOfPage + 1
 		}
-	});
+	}
+	handleChangeOfPage()
 
-	document.querySelector(".pre").addEventListener("click", () => {
-		if (currentPage > 1) {
-			currentPage--;
-			processPage();
-			updatePageIndicators();
-		}
-	});
+	nextPage.addEventListener("click", () => {
+		numberOfPage == 85 ? numberOfPage = 85 : numberOfPage++
+		processPage()
+		handleChangeOfPage()
+	})
+
+	prePage.addEventListener("click", () => {
+		numberOfPage === 1 ? numberOfPage = 1 : numberOfPage--
+		processPage()
+		handleChangeOfPage()
+	})
+
 });
-
-
-// close the sidebar after clicking the arrow icon 
-
-const sideBarCloseIcon = document.querySelector(".sidebar-close-icon");
-const searchBar = document.querySelector(".search_bar");
-const optionTitle = document.querySelectorAll('.title > p')
-const sideBarOpenIcon = document.querySelector('.sidebar-open-icon')
-const trealetLogo = document.querySelector('.trealet-logo')
-const optionSection = document.querySelector('.option-section')
-const sectionList = document.querySelector('.article_list')
-
-sideBarCloseIcon.addEventListener('click', () => {
-	searchBar.style.display = "none";
-	sideBarCloseIcon.style.display = "none";
-	sideBarOpenIcon.style.display = "flex";
-	trealetLogo.style.display = "none"
-	optionSection.style.position = "absolute";
-
-	sectionList.style.display = "none";
-
-	optionTitle.forEach((title) => {
-		title.style.display = "none"
-	})
-})
-
-sideBarOpenIcon.addEventListener('click', () => {
-	searchBar.style.display = "flex";
-	sideBarCloseIcon.style.display = "flex";
-	sideBarOpenIcon.style.display = "none"
-	trealetLogo.style.display = "flex"
-	optionSection.style.position = "unset";
-
-	sectionList.style.display = "flex";
-	optionTitle.forEach((title) => {
-		title.style.display = "flex"
-	})
-
-})
-
