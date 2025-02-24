@@ -44,6 +44,9 @@ add_shortcode('display_text', function () {
     $is_dark_mode = get_option("Demo_setting_bool1") === "true";
     $list_type_option = get_option("Demo_setting_bool") === "true";
 
+    $border_radius = get_option("Demo_setting_border_radius");
+    $background_color = get_option("Demo_setting_bg_code");
+
     // Xác định các class CSS dựa trên chế độ tối/sáng
     $theme_background = $is_dark_mode ? "dark-theme-background" : "light-theme-background";
     $theme_item = $is_dark_mode ? "item-dark-theme" : "";
@@ -63,12 +66,12 @@ add_shortcode('display_text', function () {
 
     // Tạo cấu trúc HTML chính
     $html = "
-        <section class='full'>
+        <section class='full' style='background-color: $background_color;'>
             <div class='cover'>
                 <div class='navigation'>
                     " . render_header($white_color) . "
                     <div class='direct'>
-                        <ion-icon name='help-circle-outline'></ion-icon>
+                        <a href='https://trealet.com/'><ion-icon name='help-circle-outline'></ion-icon></a>
                         <div class='user-avt'></div>
                     </div>
                 </div>

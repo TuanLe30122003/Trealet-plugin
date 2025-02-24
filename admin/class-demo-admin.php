@@ -104,6 +104,15 @@ class Demo_Admin
 			array($this, $this->option_name . '_general_cb'),
 			$this->plugin_name
 		);
+
+		add_settings_field(
+			$this->option_name . '_number1',
+			__('User ID on trealet.com', 'Demo'),
+			array($this, $this->option_name . '_number1_cb'),
+			$this->plugin_name,
+			$this->option_name . '_general',
+			array('label_for' => $this->option_name . '_number1')
+		);
 		// Add a boolean field
 		add_settings_field(
 			$this->option_name . '_bool',
@@ -134,14 +143,24 @@ class Demo_Admin
 		);
 
 		add_settings_field(
-			$this->option_name . '_number1',
-			__('User ID on trealet.com', 'Demo'),
-			array($this, $this->option_name . '_number1_cb'),
+			$this->option_name . '_border_radius',
+			__('Border radius', 'Demo'),
+			array($this, $this->option_name . '_border_radius_cb'),
 			$this->plugin_name,
 			$this->option_name . '_general',
-			array('label_for' => $this->option_name . '_number1')
+			array('label_for' => $this->option_name . '_border_radius')
 		);
 
+		add_settings_field(
+			$this->option_name . '_bg_code',
+			__('Background color code', 'Demo'),
+			array($this, $this->option_name . '_bg_code_cb'),
+			$this->plugin_name,
+			$this->option_name . '_general',
+			array('label_for' => $this->option_name . '_bg_code')
+		);
+
+		register_setting($this->plugin_name, $this->option_name . '_number1', 'integer');
 
 		// Register the boolean field
 		register_setting($this->plugin_name, $this->option_name . '_bool', array($this, $this->option_name . '_sanitize_bool'));
@@ -149,7 +168,8 @@ class Demo_Admin
 
 		// Register the numeric field
 		register_setting($this->plugin_name, $this->option_name . '_number', 'integer');
-		register_setting($this->plugin_name, $this->option_name . '_number1', 'integer');
+		register_setting($this->plugin_name, $this->option_name . '_border_radius', 'integer');
+		register_setting($this->plugin_name, $this->option_name . '_bg_code', 'integer');
 	}
 
 	/**
@@ -172,13 +192,25 @@ class Demo_Admin
 	public function demo_setting_number_cb()
 	{
 		$val = get_option($this->option_name . '_number');
-		echo '<input type="text" name="' . $this->option_name . '_number' . '" id="' . $this->option_name . '_number' . '" value="' . $val . '"> ' . __('(items)', 'Demo');
+		echo '<input type="text" name="' . $this->option_name . '_number' . '" id="' . $this->option_name . '_number' . '" value="' . $val . '"> ' . __('items', 'Demo');
 	}
 
 	public function demo_setting_number1_cb()
 	{
 		$val = get_option($this->option_name . '_number1');
 		echo '<input type="text" name="' . $this->option_name . '_number1' . '" id="' . $this->option_name . '_number1' . '" value="' . $val . '"> ' . __('', 'Demo');
+	}
+
+	public function demo_setting_border_radius_cb()
+	{
+		$val = get_option($this->option_name . '_border_radius');
+		echo '<input type="text" name="' . $this->option_name . '_border_radius' . '" id="' . $this->option_name . '_border_radius' . '" value="' . $val . '"> ' . __('px', 'Demo');
+	}
+
+	public function demo_setting_bg_code_cb()
+	{
+		$val = get_option($this->option_name . '_bg_code');
+		echo '<input type="text" name="' . $this->option_name . '_bg_code' . '" id="' . $this->option_name . '_border_radius' . '" value="' . $val . '"> ' . __('(If the entered code is unavailable, the default color #00B96B will be applied)', 'Demo');
 	}
 
 	/**
@@ -191,38 +223,40 @@ class Demo_Admin
 	{
 		$val = get_option($this->option_name . '_bool');
 		?>
-		<fieldset>
-			<label>
-				<input type="radio" name="<?php echo $this->option_name . '_bool' ?>"
-					id="<?php echo $this->option_name . '_bool' ?>" value="true" <?php checked($val, 'true'); ?>>
-				<?php _e('Scrolling list', 'Demo'); ?>
-			</label>
-			<br>
-			<label>
-				<input type="radio" name="<?php echo $this->option_name . '_bool' ?>" value="false" <?php checked($val, 'false'); ?>>
-				<?php _e('Page list', 'Demo'); ?>
-			</label>
-		</fieldset>
-		<?php
+<fieldset>
+    <label>
+        <input type="radio" name="<?php echo $this->option_name . '_bool' ?>"
+            id="<?php echo $this->option_name . '_bool' ?>" value="true" <?php checked($val, 'true'); ?>>
+        <?php _e('Scrolling list', 'Demo'); ?>
+    </label>
+    <br>
+    <label>
+        <input type="radio" name="<?php echo $this->option_name . '_bool' ?>" value="false"
+            <?php checked($val, 'false'); ?>>
+        <?php _e('Page list', 'Demo'); ?>
+    </label>
+</fieldset>
+<?php
 	}
 
 	public function demo_setting_bool1_cb()
 	{
 		$val = get_option($this->option_name . '_bool1');
 		?>
-		<fieldset>
-			<label>
-				<input type="radio" name="<?php echo $this->option_name . '_bool1' ?>"
-					id="<?php echo $this->option_name . '_bool1' ?>" value="true" <?php checked($val, 'true'); ?>>
-				<?php _e('Dark mode ', 'Demo'); ?>
-			</label>
-			<br>
-			<label>
-				<input type="radio" name="<?php echo $this->option_name . '_bool1' ?>" value="false" <?php checked($val, 'false'); ?>>
-				<?php _e('Light Mode', 'Demo'); ?>
-			</label>
-		</fieldset>
-		<?php
+<fieldset>
+    <label>
+        <input type="radio" name="<?php echo $this->option_name . '_bool1' ?>"
+            id="<?php echo $this->option_name . '_bool1' ?>" value="true" <?php checked($val, 'true'); ?>>
+        <?php _e('Dark mode ', 'Demo'); ?>
+    </label>
+    <br>
+    <label>
+        <input type="radio" name="<?php echo $this->option_name . '_bool1' ?>" value="false"
+            <?php checked($val, 'false'); ?>>
+        <?php _e('Light Mode', 'Demo'); ?>
+    </label>
+</fieldset>
+<?php
 	}
 
 	/**
@@ -242,7 +276,7 @@ class Demo_Admin
 
 	public function demo_plugin_setup_menu()
 	{
-		add_menu_page('demo settings', 'Settings Text Display', 'manage_options', 'demo', array($this, 'demo_init'), 'dashicons-welcome-learn-more');
+		add_menu_page('Customization for Trealet Plugin', 'Trealet Plugin', 'manage_options', 'demo', array($this, 'demo_init'), 'dashicons-welcome-learn-more');
 
 	}
 
